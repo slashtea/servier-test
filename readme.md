@@ -2,7 +2,7 @@
 
 Le livrable est partagé en deux parties:
 * Une partie Python décrite ci-dessous dans la doc
-* Une partie SQL situé dans le répertoire `sql_test` et aussi décrite à la fin de cette doc.
+* Une partie SQL situé dans le répertoire `sql` et aussi décrite à la fin de cette doc.
 
 ## Documentation Python
 
@@ -11,7 +11,7 @@ Le livrable est partagé en deux parties:
 * Le fichier `requirements.txt` contient les dépendances à installer.
 * Les fichiers sources sont dans le répertoire `datasources`.
 * Le graph json est le répertoire `outputs`.
-* Le code proposé est principalement situé dans le module **data_prep.py** avec les fonctions principales contenant une **doc string**:
+* Le code proposé est principalement situé dans le répertoire **servier** et dans le module **data_prep.py** avec les fonctions principales contenant une **doc string**:
     * `read_pandas_csv`: Lecture des datasources et generation d'un dataframe pour faciliter le parsing.
     * `pubmed_journal_search`: cherche le médicament dans le dataset **pubmed** et enregistre les publications en journal.
     * `clinical_trial_search`: cherche le médicament dans le dataset **clinical trials**.
