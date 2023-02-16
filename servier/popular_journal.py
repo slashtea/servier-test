@@ -9,7 +9,8 @@ def read_file(file_path):
 
 def find_popular_journal(data):
     """ Iterate over all journal values and increment if value exists
-    Returns first most popular element sorted by number of publications 
+    Returns one or many most popular journal having the maximum number
+    of citations. 
     """
     occurences = {}
     for k, v in data.items():
@@ -18,10 +19,11 @@ def find_popular_journal(data):
                 occurences[j["journal"]] += 1
             else:
                 occurences[j["journal"]] = 1
-    return sorted(occurences, lambda journal: journal[1], reverse=True)[0]
+    return [k for k, v in occurences.items() if v == max(occurences.values())]
 
 
 if __name__ == "__main__":
-    json_graph = read_file("output.json")
+    INPUT_DIR = "../outputs"
+    json_graph = read_file(f"{INPUT_DIR}/output.json")
     most_popular_journal = find_popular_journal(json_graph)
     print(most_popular_journal)
