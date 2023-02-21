@@ -1,46 +1,63 @@
-from pandas import read_csv
+from pandas import read_csv, DataFrame
 from collections import defaultdict
 from json import dump
+import logging
+from datetime import datetime
 
 
-def read_pandas_csv(file_path, name, header=True):
+def read_pandas_csv(file_path: str, name: str, header=True) -> DataFrame:
     """ Function to read csv with and produce a dataframe as an output """
-    df = read_csv(file_path)
-    df.name = name
-    return df
+    try:
+        df = read_csv(file_path)
+        df.name = name
+        return df
+    except Exception as e:
+        logging.error(e)
 
 
-def pubmed_journal_search(dataframe, search_col, drug, result_dict):
+
+def pubmed_journal_search(dataframe: DataFrame, search_col: str, drug: str,
+                          result_dict: dict) -> dict:
     """ Function gets pubmed with a drug mention in the title
         and gets the associated journal.
     """
     result_dict[drug][dataframe.name] = []
     result_dict[drug]["journal"] = []
     
-    for index, row in dataframe.iterrows():
-        if drug.lower() in row[search_col].lower():
-            # create dict for pubmed and journal.
-            dict_pubmed = {"title": row[search_col], "date": row["date"]}
-            dict_journal = {"journal": row["journal"], "date": row["date"]}
+    try:
+        for index, row in dataframe.iterrows():
+            if drug.lower() in row[search_col].lower():
+                # create dict for pubmed and journal.
+                dict_pubmed = {"title": row[search_col],
+                                "date": row["date"]}
+                dict_journal = {"journal": row["journal"],
+                                "date": row["date"]}
 
-            # append values.
-            result_dict[drug][dataframe.name].append(dict_pubmed)
-            result_dict[drug]["journal"].append(dict_journal)
-    return result_dict
+                # append values.
+                result_dict[drug][dataframe.name].append(dict_pubmed)
+                result_dict[drug]["journal"].append(dict_journal)
+        return result_dict
+    except Exception as e:
+        logging.error(e)
 
 
-def clinical_trial_search(dataframe, search_col, drug, result_dict):
+
+def clinical_trial_search(dataframe: DataFrame, search_col: str, drug: str,
+                          result_dict: dict) -> dict:
     """ Function gets clinical trials with a drug mention in the title """
-    result_dict[drug][dataframe.name] = []
-    
-    for index, row in dataframe.iterrows():
-        if drug.lower() in row[search_col].lower():
-            dict_trials = {"title": row[search_col], "date": row["date"]}
-            result_dict[drug][dataframe.name].append(dict_trials)
-    return result_dict
+    try:
+        result_dict[drug][dataframe.name] = []
+        
+        for index, row in dataframe.iterrows():
+            if drug.lower() in row[search_col].lower():
+                dict_trials = {"title": row[search_col], "date": row["date"]}
+                result_dict[drug][dataframe.name].append(dict_trials)
+        return result_dict
+    except Exception as e:
+        logging.error(e)
 
 
-def clean_results(drugs):
+def clean_results(drugs: dict) -> dict:
     """ Function to remove drugs that were not mentioned in pubmed 
     and clinical trials.
     """
@@ -59,6 +76,9 @@ def write_json(file_path, data, mode="w"):
 
 
 if __name__ == "__main__":
+    # logging
+    logging.basicConfig(filename="logs.log", encoding="utf-8", level=logging.DEBUG)
+
     # Useful vars
     OUTPUT_DIR = "../outputs"
     INPUT_DIR = "../datasources"

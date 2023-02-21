@@ -1,13 +1,16 @@
 import json
 
 
-def read_file(file_path):
+def read_file(file_path: str) -> json:
     """ Reads a json file """
-    with open(file_path, mode="r") as f:
-        return json.load(f)
+    try:
+        with open(file_path, mode="r") as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"Exception {e}")
 
 
-def find_popular_journal(data):
+def find_popular_journal(data: dict) -> list:
     """ Iterate over all journal values and increment if value exists
     Returns one or many most popular journal having the maximum number
     of citations. 
@@ -19,7 +22,9 @@ def find_popular_journal(data):
                 occurences[j["journal"]] += 1
             else:
                 occurences[j["journal"]] = 1
-    return [k for k, v in occurences.items() if v == max(occurences.values())]
+    
+    max_value = max(occurences.values())
+    return [k for k, v in occurences.items() if v == max_value]
 
 
 if __name__ == "__main__":

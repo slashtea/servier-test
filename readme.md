@@ -7,7 +7,6 @@ Le livrable est partagé en deux parties:
 ## Documentation Python
 
 ### Code et organization
-* Fichier `__init__.py` pour pouvoir faire des imports en cas de réutilisations.
 * Le fichier `requirements.txt` contient les dépendances à installer.
 * Les fichiers sources sont dans le répertoire `datasources`.
 * Le graph json est le répertoire `outputs`.
@@ -22,7 +21,7 @@ Le livrable est partagé en deux parties:
 
 ### Choix
 * Utilisation des dataframes pour faciliter le parsing et la récupération des valeurs(titre, date ...)
-* Création de deux fonctions distinces (pubmed/journaux et clinical trials), dans le sens où en serait interessé par uniquement un des deux sans forcément traiter l'autre. Potentiellement on pourrait ajouter un `if statement` et garder une seule fonction mais ca engendrai le fait d'avoir des valeurs `hardcoded` et entacherai la réutilisation.
+* Création de deux fonctions distinces (pubmed/journaux et clinical trials), dans le sens où en serait interessé par uniquement un des deux sans forcément traiter l'autre. Dans une approche d'avoir un code un peu plus découplé.
 
 
 ### Tests

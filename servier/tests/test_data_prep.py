@@ -18,20 +18,11 @@ def input_df():
 
 def test_clinical_trial_search_type_and_key(input_df):
     drug="Diphenhydramine"
-    search_col="scientific_title"                           
+    search_col="scientific_title"                        
     result_dict = defaultdict(dict)
     result = clinical_trial_search(input_df, search_col, drug, result_dict)
     assert type(result) == defaultdict
     assert list(result.keys()) == [drug]
-
-
-def test_clinical_trial_search_should_fail(input_df):
-    drug="Diphenhydramine"
-    search_col="scientific_title"                           
-    result_dict = defaultdict(dict)
-    result = clinical_trial_search(input_df, search_col, drug, result_dict)
-    with pytest.raises(AssertionError):
-        assert len(list(result.keys())) == 0
 
 
 def test_read_csv_file(mocker):

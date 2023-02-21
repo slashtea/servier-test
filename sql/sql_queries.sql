@@ -4,17 +4,17 @@
 -- et groupe
 WITH TOTAL_VENTES AS (
   SELECT
-    *,
+    date,
     prod_price * prod_qty AS total
   FROM `project-id.dataset.transactions`
+  WHERE date >= "2019-01-01" AND date <= "2019-12-31"
 )
 
 SELECT
   date,
   SUM(total) AS ventes
 FROM TOTAL_VENTES
-WHERE date >= "2019-01-01" AND date <= "2019-12-31"
-GROUP BY date
+GROUP BY date;
 
 
 -- Deuxieme question
@@ -22,13 +22,13 @@ GROUP BY date
 
 WITH TOTAL_VENTES AS (
   SELECT
-    client_id,
-    product_type,
-    prop_price * prod_qty AS total
+    transac.client_id,
+    produit.product_type,
+    transac.prop_price * transac.prod_qty AS total
   FROM `project-id.dataset.transactions` AS transac
   INNER JOIN `project-id.dataset.products` AS produit
   ON transac.prop_id = produit.product_id
-  WHERE date >= "2019-01-01" AND date <= "2019-12-31"
+  WHERE transac.date >= "2019-01-01" AND transac.date <= "2019-12-31"
 )
 
 SELECT * FROM
