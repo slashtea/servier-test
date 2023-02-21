@@ -29,6 +29,7 @@ WITH TOTAL_VENTES AS (
   INNER JOIN `project-id.dataset.products` AS produit
   ON transac.prop_id = produit.product_id
   WHERE transac.date >= "2020-01-01" AND transac.date <= "2020-12-31"
+  AND product_type in ('MEUBLE', 'DECO')
 )
 
 SELECT * FROM
