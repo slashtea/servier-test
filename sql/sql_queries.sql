@@ -7,7 +7,7 @@ WITH TOTAL_VENTES AS (
     date,
     prod_price * prod_qty AS total
   FROM `project-id.dataset.transactions`
-  WHERE date >= "2019-01-01" AND date <= "2019-12-31"
+  WHERE date >= "2020-01-01" AND date <= "2020-12-31"
 )
 
 SELECT
@@ -28,7 +28,7 @@ WITH TOTAL_VENTES AS (
   FROM `project-id.dataset.transactions` AS transac
   INNER JOIN `project-id.dataset.products` AS produit
   ON transac.prop_id = produit.product_id
-  WHERE transac.date >= "2019-01-01" AND transac.date <= "2019-12-31"
+  WHERE transac.date >= "2020-01-01" AND transac.date <= "2020-12-31"
 )
 
 SELECT * FROM

@@ -3,6 +3,7 @@ from collections import defaultdict
 from json import dump
 import logging
 from datetime import datetime
+from dateutil import parser
 
 
 def read_pandas_csv(file_path: str, name: str, header=True) -> DataFrame:
@@ -29,9 +30,9 @@ def pubmed_journal_search(dataframe: DataFrame, search_col: str, drug: str,
             if drug.lower() in row[search_col].lower():
                 # create dict for pubmed and journal.
                 dict_pubmed = {"title": row[search_col],
-                                "date": row["date"]}
+                                "date": parser.parse(row["date"]).strftime("%d/%m/%Y")}
                 dict_journal = {"journal": row["journal"],
-                                "date": row["date"]}
+                                "date": parser.parse(row["date"]).strftime("%d/%m/%Y")}
 
                 # append values.
                 result_dict[drug][dataframe.name].append(dict_pubmed)
@@ -50,7 +51,8 @@ def clinical_trial_search(dataframe: DataFrame, search_col: str, drug: str,
         
         for index, row in dataframe.iterrows():
             if drug.lower() in row[search_col].lower():
-                dict_trials = {"title": row[search_col], "date": row["date"]}
+                dict_trials = {"title": row[search_col],
+                               "date": parser.parse(row["date"]).strftime("%d/%m/%Y")}
                 result_dict[drug][dataframe.name].append(dict_trials)
         return result_dict
     except Exception as e:
