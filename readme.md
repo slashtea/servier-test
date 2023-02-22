@@ -14,7 +14,6 @@ Le livrable est partagé en deux parties:
     * `read_pandas_csv`: Lecture des datasources et generation d'un dataframe pour faciliter le parsing.
     * `pubmed_journal_search`: cherche le médicament dans le dataset **pubmed** et enregistre les publications en journal.
     * `clinical_trial_search`: cherche le médicament dans le dataset **clinical trials**.
-    * `clean_results`: Nettoyage du résultat final avant de créer le JSON.
     * `write_json`: Ecrie le graph sous format de JSON.
     * Un bloc main accompagne le code pour un exemple d'éxecution.
 * Le traitement ad-hoc est situé dans le module **popular_journal.py** avec les fonctions principales contenant une **doc string**.

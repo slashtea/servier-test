@@ -2,7 +2,6 @@ from pandas import read_csv, DataFrame
 from collections import defaultdict
 from json import dump
 import logging
-from datetime import datetime
 from dateutil import parser
 
 
@@ -22,9 +21,6 @@ def pubmed_journal_search(dataframe: DataFrame, search_col: str, drug: str,
     """ Function gets pubmed with a drug mention in the title
         and gets the associated journal.
     """
-    result_dict[drug][dataframe.name] = []
-    result_dict[drug]["journal"] = []
-    
     try:
         for index, row in dataframe.iterrows():
             if drug.lower() in row[search_col].lower():
@@ -42,13 +38,10 @@ def pubmed_journal_search(dataframe: DataFrame, search_col: str, drug: str,
         logging.error(e)
 
 
-
 def clinical_trial_search(dataframe: DataFrame, search_col: str, drug: str,
                           result_dict: dict) -> dict:
     """ Function gets clinical trials with a drug mention in the title """
-    try:
-        result_dict[drug][dataframe.name] = []
-        
+    try:        
         for index, row in dataframe.iterrows():
             if drug.lower() in row[search_col].lower():
                 dict_trials = {"title": row[search_col],
@@ -57,18 +50,6 @@ def clinical_trial_search(dataframe: DataFrame, search_col: str, drug: str,
         return result_dict
     except Exception as e:
         logging.error(e)
-
-
-def clean_results(drugs: dict) -> dict:
-    """ Function to remove drugs that were not mentioned in pubmed 
-    and clinical trials.
-    """
-    drugs_copy = drugs.copy()
-    for drug, results in drugs_copy.items():
-        if len(results["journal"]) == 0 and len(results["pubmed"]) == 0  \
-            and len(results["clinical trials"]) == 0:
-            del drugs[drug]
-    return drugs
 
 
 def write_json(file_path, data, mode="w"):
@@ -84,7 +65,7 @@ if __name__ == "__main__":
     # Useful vars
     OUTPUT_DIR = "../outputs"
     INPUT_DIR = "../datasources"
-    drugs_results = defaultdict(dict)
+    drugs_results = defaultdict(lambda: defaultdict(list))
 
     # Reading datasets
     drugs = read_pandas_csv(f"{INPUT_DIR}/drugs.csv", "drugs")
@@ -97,9 +78,6 @@ if __name__ == "__main__":
         pubmed_journal_search(pubmed, "title", drug, drugs_results)
         clinical_trial_search(clinical_trials, "scientific_title", drug,
                               drugs_results)
-    
-    # Cleaning.
-    drugs_results_cleaned = clean_results(drugs_results)
     
     # Writing graph to JSON.
     write_json(f"{OUTPUT_DIR}/output.json", drugs_results)
